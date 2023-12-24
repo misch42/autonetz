@@ -17,8 +17,8 @@ session = requests.Session()
 session.verify = False
 
 nb = pynetbox.api(
-    'https://192.168.88.20',
-    token='a2c0d29623b5eef6e06ee0dbee9cd3e06d0d2300'
+    'https://192.0.2.10',
+    token='12345678'
 )
 
 nb.http_session = session
@@ -94,8 +94,8 @@ def pnp_work_request():
         config_text = render_template('provision.jinja', **jinja_context)
         print (config_text)
         #   
-        url = "http://192.168.88.20/api/dcim/devices/" + str(device.id) + "/render-config/"
-        headers = {"Content-Type": "application/json", "Authorization": "Token a2c0d29623b5eef6e06ee0dbee9cd3e06d0d2300"}
+        url = "http://192.0.2.10/api/dcim/devices/" + str(device.id) + "/render-config/"
+        headers = {"Content-Type": "application/json", "Authorization": "Token 12345678"}
         response = requests.post(url, headers=headers)
         # print("JSON Response ", response.json.content())
         print(response.json().get("content") )
