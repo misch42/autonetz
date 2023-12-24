@@ -1,0 +1,102 @@
+= Automated Network
+Dr. Michael Schwartzkopff <ms@sys4.de>
+v0.1, 25.03.2023
+:toc:
+
+<<<
+
+In recent years, automation has changed the organization and operation of data centers fundamentally.
+Instead of individual servers, the administrator now manages virtual machines on a platform.
+New servers are created with a mouse click in the GUI or destroyed again.
+The right integration ensures that disk space is also reserved and the new computer
+appears in the correct network.
+
+Large manufacturers have created completely new platforms for this task and are trying to retain customers even more.
+Once a specific platform provides automation in the data center, it is difficult to change the vendor.
+Of course, the customer also has to install the hardware from this manufacturer. Dependence on this one manufacturer
+becomes larger from the customer's point of view.
+
+In the long run, prices of servers in a highly automated data center of a service provider will
+decline more and more. The limit is the cost of the energy. Such service providers are of course known under the name cloud computing.
+Providers such as Amazon or Microsoft can set up customer-related networks and servers on their uniform platform.
+Customers can click whatever their wallet will allow.
+
+Automation has taken over in the data center and has significantly optimized operations.
+
+In the office network, automation is just beginning. Manufacturers are starting to offer cloud or automation products
+for campus networks. Cisco calls this product Meraki or DNA Center. Other manufacturers offer similar products.
+If you look at the price structure of the corresponding devices, you unfortunately have to realize that the optimization by
+automation also has its price. Cloud products are no cheaper than traditional switches.
+
+In this document, I want to show how you can use the advantages of automation without the disadvantages of a cloud solution.
+In particular, my solution should not mean a one-way into the dependency of one manufacturer,
+but represent a uniform solution for devices from different manufacturers. Basically the same approache applies to
+all manufacturers. In detail, the device-specific drivers may need to be replaced.
+
+== Introduction
+
+The art of network administering is that everything works, packets are transported from here to there,
+without the administrator having to do much. This is no problem in static networks. But anyone who has ever
+been sitting at a console knows that networks behave dynamically. Components break, software needs patching,
+redundancy does not work as intended, or a new killer feature must be installed. If it gets really bad,
+the entire outdated hardware has to be replaced. In short, the work doesn't stop.
+
+For as long as networks have existed, administrators have tried to simplify their work.
+Everyone has already built scripts, specific one to find computers in the network or automate the backup.
+For every single problem you will find a nice soluton on the internet.
+But the problem for a big hit is the complexity of the task. There is no uniform
+administration for the firewall from manufacturer X and switches from Y. The Simple Network Management Protocol (SNMP) 
+was a first try to standartize management as specified in RFCs. But the standartization included not all configuration
+options and writing to the objects was not widely implemented. So the manufactorers had to add to write their own
+Management Infotmation Bases (MIB).
+In addition to that, versions 1 and 2 of SNMP had a serious design problem regarding security , so no administrator
+wanted to do the configuration of the devices via this protocol.
+Monitoring, i.e. reading status data, is now the main area of application for this protocol.
+
+With the work on the Yet Another Next Generation (YANG) language for modeling configuration and state data specifically from
+network devices, the IETF tries a new approach to standardization. If you look at the modeling of the current devices
+from the major manufacturers, unfortunately, you have to realize that the manufacturers add extensions the the standard models again. 
+The standard of language and transfer protocol is used to "extend" the standard models of the devices.
+Without these extensions you can't use the special features of the devices. At the same time, this approach torpedoes
+interoperability. You can't just replace devices woth models from another manufacturer.
+
+The whole issue of lack of interoperability is a dilemma. Without innovation and thus a difference to the competition
+there is no progress. On the other hand, this very fragmentation leads to unnecessary costs. In a recent example
+(2022) I saw an offer for a simple 10GBASE-LR SFP+ GBIC from the device manufacturer for 2,400 EUR.
+You can get compatible models for under 30 euros, but you will loose support on that device.
+
+Back to our goal: We want to set up and operate a campus network consisting of the core, distribution and access levels.
+The network should require as little work as possible both during setup and during subsequent operation. But that also means that
+as much work as possible needs to be automated. Thus, the same work step can not only be carried out on one device
+100 or 2000 can be carried out.
+
+Other applications of this work would be smaller networks with a collapsed core, multple smaller remote offices or
+a provider that offers network operation services to many customers.
+
+In this article I want to present the individual elements of such an automation and the integration.
+The next chapter "Architecture" will provide an overview of the individual building blocks.
+First generic and then as an actual implementation. Then they are related
+so that all building blocks can work well together.
+
+Here I am in a dilemma how to structure of the text. Either I first describe the individual building blocks,
+their integration and only then applications of automation. Or the other way, I describe individual aspects
+of automation in the network and use individual building blocks and their interaction.
+I chose the first way because there are a number of individual building blocks and their integration requires some explanation.
+So maybe these chapters are a bit dry for the practice-oriented reader. So if you want to get started with automation right away
+using examples go straight to the TODO chapter. You can read the theoretical TODO chapters beforehand as a reference in between.
+
+Another consideration for automation. First of all, automation is a lot of work. For a good, working system
+you have to think a lot beforehand. Good planning helps to avoid sneaky dead ends.
+You should also follow the 80/20 approach. With good automation you can solve 80% of the problems with 20% of the
+effort. For the remaining 20% you need an additional 80% of the effort. And for that reason, it's perfectly legitimate
+not to automate the remaining 20%, but to continue to manage them by hand. So the manual administration
+of the resudial corner cases perhaps causes less effort than the work to incorporate the last exception into the automation.
+I know that contradicts the German tendency towards overengineering. But sometimes the pragmatic approach is that
+most reasoanble.
+
+So it is perfectly legitimate to automate only the access level in the campus network, but not the distribution and the core.
+Because, let's be honest, how often do we change the configuration at these core levels of the network?
+
+include::architecture.adoc[]
+
+include::applications.adoc[]
